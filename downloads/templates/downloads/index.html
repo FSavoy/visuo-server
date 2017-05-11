@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/downloads.css" />{% endblock %}
+
+{% block content %}
+<form action="/downloads/" method="post">{% csrf_token %}
+<div id="weather-form" class="module column">
+<h2>WEATHER MEASUREMENTS</h2>
+
+{% if weather_data_available %}
+<table>
+{{form_weather.as_table}}
+</table>
+
+<div style="text-align:center">
+    <input type="submit" name="matlab-weather" value="Matlab file">
+    <input type="submit" name="excel-weather" value="Excel file"> 
+</div>
+{% else %}
+<h5><center>No data</center></h5>
+{% endif %}
+
+</div>
+</form>
+
+<form action="/downloads/" method="post">{% csrf_token %}
+<div id="radiosonde-form" class="module column">
+<h2>RADIOSONDE MEASUREMENTS</h2>
+
+{% if radiosonde_data_available %}
+<table>
+{{form_radiosonde.as_table}}
+</table>
+
+<div style="text-align:center">
+    <input type="submit" name="matlab-radiosonde" value="Matlab file"> 
+	<input type="submit" name="excel-radiosonde" value="Excel file"> 
+</div>
+{% else %}
+<h5><center>No data</center></h5>
+{% endif %}
+
+</div>
+</form>
+
+
+{% endblock %}

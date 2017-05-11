@@ -1,0 +1,92 @@
+{% load staticfiles %}<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE|default:"en-us" }}" {% if LANGUAGE_BIDI %}dir="rtl"{% endif %}>
+<head>
+<title>VISUO server | {{ title }}</title>
+{% block stylesheet %}
+<link rel="stylesheet" type="text/css" href="{% static "css/base.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "css/custom.css" %}" />
+{% endblock %}
+{% block extrastyle %}{% endblock %}
+<!--[if lte IE 7]><link rel="stylesheet" type="text/css" href="{% block stylesheet_ie %}{% static "css/ie.css" %}{% endblock %}" /><![endif]-->
+{% if LANGUAGE_BIDI %}<link rel="stylesheet" type="text/css" href="{% block stylesheet_rtl %}{% static "css/rtl.css" %}{% endblock %}" />{% endif %}
+{% comment %}
+<script type="text/javascript">{% static "/static/js/" %}";</script>
+{% endcomment %}
+{% block extrahead %}{% endblock %}
+{% block blockbots %}<meta name="robots" content="NONE,NOARCHIVE" />{% endblock %}
+</head>
+{% load i18n %}
+
+<body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}">
+
+<!-- Container -->
+<div id="container">
+
+    {% if not is_popup %}
+    <!-- Header -->
+    <div id="header">
+        <div id="branding">
+		<h1 id="site-name">{% trans 'VISUO server' %}</h1>
+        </div>
+        {% if user.is_active %}
+        <div id="user-tools">
+            {% trans 'Welcome,' %}
+            <strong>{% firstof user.get_full_name user.get_username %}</strong>.
+            {% block userlinks %}
+                {% url 'django-admindocs-docroot' as docsroot %}
+                {% if docsroot %}
+                    <a href="{{ docsroot }}">{% trans 'Documentation' %}</a> /
+                {% endif %}
+                {% if user.has_usable_password %}
+                <a href="/accounts/password_change/">{% trans 'Change password' %}</a> /
+                {% endif %}
+                <a href="/accounts/logout/">{% trans 'Log out' %}</a>
+            {% endblock %}
+        </div>
+        {% endif %}
+        {% block nav-global %}{% endblock %}
+    </div>
+    <!-- END Header -->
+    {% block breadcrumbs %}
+    
+    <div class="navigation">
+		<ul>
+			<li {% if title == 'Data visualization' %} class="current"{% endif %}><a href="/" title="Data visualization">Data visualization</a></li>
+			<li>|</li>
+			<li {% if title == 'Sky pictures' %} class="current"{% endif %}><a href="/pictures" title="Sky pictures">Sky pictures</a></li>
+			<li>|</li>
+			<li {% if title == 'Data downloads' %} class="current"{% endif %}><a href="/downloads" title="Data downloads">Data downloads</a></li>
+		</ul>
+	</div>
+	<br class="clear" />
+    
+    {% endblock %}
+    {% endif %}
+
+    {% block messages %}
+        {% if messages %}
+        <ul class="messagelist">{% for message in messages %}
+          <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message|capfirst }}</li>
+        {% endfor %}</ul>
+        {% endif %}
+    {% endblock messages %}
+
+    <!-- Content -->
+    <div id="content" class="{% block coltype %}colM{% endblock %}">
+        {% block pretitle %}{% endblock %}
+        {% block content_title %}{% if title %}<h1>{{ title }}</h1>{% endif %}{% endblock %}
+        {% block content %}
+        {% block object-tools %}{% endblock %}
+        {{ content }}
+        {% endblock %}
+        {% block sidebar %}{% endblock %}
+        <br class="clear" />
+    </div>
+    <!-- END Content -->
+
+    {% block footer %}<div id="footer"></div>{% endblock %}
+</div>
+<!-- END Container -->
+
+</body>
+</html>

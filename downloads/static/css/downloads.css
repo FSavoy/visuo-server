@@ -1,0 +1,13 @@
+/*
+    General column setting
+*/
+
+.module {
+	background: #f8f8f8;
+}
+
+.column {
+	float: left;
+	margin-right: 40px;
+	margin-bottom: 40px;
+}

@@ -1,0 +1,60 @@
+/*
+    Custom styles completing DJANGO Admin styles
+*/
+
+/*
+    General column setting
+*/
+
+.module {
+	background: #f8f8f8;
+}
+
+.column {
+	float: left;
+	margin-right: 40px;
+	margin-bottom: 40px;
+}
+
+
+/*
+    Sky pictures page
+*/
+
+#changelist {
+    margin-left: 450px;
+    width: auto !important;
+}
+
+#changelist li {
+	padding: 0px;
+    line-height: 16px;
+}
+
+#changelist td {
+	border-bottom: none;
+}
+
+#changelist tr {
+	border-bottom: 1px solid #eee;
+}
+
+.image-container {
+	width: 125px;
+	min-height: 125px;
+	float: left;
+	padding: 10px;
+	position: relative
+}
+
+.description{
+	float: left;
+	padding-left: 20px;
+	border-bottom: none;
+}
+
+.inner-table{
+    display: inline-block;
+    min-width: 65px;
+	margin: 0px !important;
+}

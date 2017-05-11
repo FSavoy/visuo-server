@@ -1,0 +1,195 @@
+/*
+    Projection page
+*/
+
+#map-canevas{
+	height: 100%;
+}
+
+#loader{
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+	height: 100%;
+	z-index: 9999;
+	background-image: url('../img/page-loader.gif');
+	background-repeat: no-repeat;
+	background-position: center;
+	background-color: rgba(0,0,0,0.5);
+}
+
+#time-search{
+	position: absolute;
+	top: 200px;
+	left: 60px;
+	border-width: 2px;
+}
+
+#satellite{
+	position: absolute;
+	top: 440px;
+	left: 60px;
+	border-width: 2px;
+}
+
+#image-thumbnail, #image-thumbnail-3D{
+	position: absolute;
+	top: 200px;
+	right: 220px;
+	border-width: 2px;
+}
+
+#image-thumbnail{
+	width: 125px;
+	height: 144px;
+}
+
+#image-thumbnail-3D{
+	width: 250px;
+	height: 144px;
+}
+
+#image-thumbnail, #image-thumbnail-3D img{
+	display: inline;
+}
+
+#radiosonde-infos{
+	position: absolute;
+	top: 200px;
+	right: 60px;
+	border-width: 2px;
+	font-size: 0.9em;
+}
+
+#radiosonde-infos-content{
+	padding: 5px;
+}
+
+#weather-infos{
+	position: absolute;
+	bottom: 10px;
+	left: 60px;
+	border-width: 2px;
+	font-size: 0.9em;
+}
+
+#weather-infos-content{
+	padding: 5px;
+}
+
+#dataSelectionFormLeft{
+	position: absolute;
+  	left: 30px;
+}
+
+#dataSelectionFormRight{
+	position: absolute;
+	right: 30px;
+}
+
+#radiosondeSelectionForm{
+	position: absolute;
+	bottom: 22px;
+	right: 2px;
+	width: 129px;
+}
+
+#playimg{
+	position: fixed;
+	bottom: 190px;
+	left: 380px;
+}
+
+.alignleft {
+	float: left;
+	width:30%;
+	text-align:left;
+	padding-left: 3.33333%;
+	padding-top: 6px;
+	padding-right: 0px;
+}
+
+.aligncenter {
+	float: left;
+	width:33.33333%;
+	text-align:center;
+	padding: 0px;
+}
+
+.alignright {
+	float: left;
+	width:30%;
+	text-align:right;
+	padding-left: 0px;
+	padding-top: 6px;
+	padding-right: 3.33333%;
+	padding: 0px;
+}
+
+html, body {
+	overflow-y: hidden;
+	height: 100%;
+}
+
+.axis path,
+.axis line {
+	fill: none;
+	stroke: #000;
+	shape-rendering: crispEdges;
+}
+
+.lineLeft {
+	fill: none;
+	stroke: blue;
+	stroke-width: 1.5px;
+}
+
+.lineRight {
+	fill: none;
+	stroke: brown;
+	stroke-width: 1.5px;
+}
+
+.lineTime {
+	fill: none;
+	stroke: red;
+	stroke-width: 2px;
+}
+
+.lineTimeOtherImages {
+	fill: none;
+	stroke: red;
+	stroke-width: 1px;
+}
+
+.lineTimeIndicator {
+	fill: none;
+	stroke: red;
+	stroke-width: 1px;
+}
+
+.overlay {
+	fill: none;
+	pointer-events: all;
+}
+
+.cicrleLeft {
+	fill: blue;
+}
+
+.cicrleRight {
+	fill: brown;
+}
+
+.timeRect {
+	fill: white;
+	stroke-width: 1px;
+	stroke: red;
+}
+
+.valuesBox {
+	fill: white;
+	stroke-width: 1px;
+	stroke: gray;
+}

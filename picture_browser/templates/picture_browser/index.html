@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/picture_browser.css" />
+<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/changelists.css" />{% endblock %}
+
+{% load picture_browser_extras %}
+
+{% block content %}
+
+<form action="/pictures/" method="post">{% csrf_token %}
+<div id="search" class="module column">
+<h2>SEARCH FILTERS</h2>
+
+{% if data_available %}
+<table>
+{{form_search.as_table}}
+</table>
+
+<div style="text-align:center">
+    <input type="submit" name="submit" value="Search"> 
+</div> 
+
+{% else %}
+<h5><center>No data</center></h5>
+{% endif %}
+</div>
+</form>
+
+
+<div id="changelist">
+{% if results.object_list|length > 0 %}
+<p class="paginator">
+	<span class="step-links">
+        {% if results.has_previous %}
+            <a href="/pictures/{{ results.previous_page_number }}/">Previous page</a> - 
+        {% endif %}
+
+        <span class="current">
+            Page {{ results.number }} of {{ results.paginator.num_pages }}
+        </span>
+
+        {% if results.has_next %}
+            - <a href="/pictures/{{ results.next_page_number }}/">Next page</a>
+        {% endif %}
+    </span>
+</p>
+<table>
+{% for skyimage in results %}
+	<tr class="{% if forloop.counter|divisibleby:2 %}row1{% else %}row2{% endif %}">
+		<td class="image-container" scope="col">
+			<IMG SRC="{% get_media_prefix %}{{ skyimage.image|thumbnail:'125x125'}}" ALT="{{ skyimage }}" TITLE="{{ skyimage }}">
+		</td>
+		<th class="description">
+		<p><b>{{ skyimage.date|date:"d/m/Y" }} {{ skyimage.time|date:"H:i:s" }}</b></p>
+		<ul>
+			<li>Device: {{ skyimage.device }}</li>
+			<li>Exposure time: {{ skyimage.exposure_time|exposure }}</li>
+			<li>Aperture value: {{ skyimage.aperture_value|aperture }}</li>
+			<li>ISO speed: {{ skyimage.ISO_speed }}</li>
+		</ul>
+		<p class="download-links">Download: <a href="{% get_media_prefix %}{{ skyimage.image }}" target="_blank">original size</a>, <a href="{% get_media_prefix %}{{ skyimage.image|thumbnail:'1000x667'}}" target="_blank">1000x667</a>, <a href="{% get_media_prefix %}{{ skyimage.image|thumbnail:'125x125'}}" target="_blank">125x125</a>.</p>
+		</th>
+    </tr>
+{% endfor %}
+</table>
+
+<p class="paginator">
+	<span class="step-links">
+        {% if results.has_previous %}
+            <a href="/pictures/{{ results.previous_page_number }}/">Previous page</a> - 
+        {% endif %}
+
+        <span class="current">
+            Page {{ results.number }} of {{ results.paginator.num_pages }}
+        </span>
+
+        {% if results.has_next %}
+            - <a href="/pictures/{{ results.next_page_number }}/">Next page</a>
+        {% endif %}
+    </span>
+</p>
+
+{% else %}
+<div class="pagination">
+    <span class="step-links">
+
+        <span class="current">
+            No image found
+        </span>
+
+    </span>
+</div>
+{% endif %}
+</div>
+
+{% endblock %}

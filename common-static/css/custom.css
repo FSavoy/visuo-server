@@ -1,0 +1,56 @@
+/*
+    Custom styles completing DJANGO Admin styles
+*/
+
+#container{
+	min-width: 1024px;
+}
+
+/*
+    Navigation
+*/
+
+.navigation{
+	background: #79aec8;
+    padding: 10px 40px;
+    border: none;
+    font-size: 14px;
+    color: #c4dce8;
+    text-align: left;
+}
+
+.navigation ul{
+	margin:0;
+	padding: 0;
+	list-style: none;
+}
+
+.navigation li{
+	display: inline;
+	margin: 0 15px 0 0;
+	padding: 0px;
+}
+
+.navigation aold{
+	float: left;
+	display: block;
+	color: #666666;
+	text-decoration: none;
+	margin: 0 1px 0 0; /*Margin between each menu item*/
+	padding: 2px 7px 2px 7px; /*Padding within each menu item*/
+	background-color: #f6f4f2; /*Default menu color*/
+	border-bottom: 8px solid white;
+}
+
+.navigation a{
+	color: #fff;
+}
+
+.navigation a:hover{
+	color: #ffc;
+}
+
+.navigation .current a{ /** currently selected menu item **/
+	color: #ffc;
+	font-weight: bold;
+}

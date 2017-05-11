@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block extrahead %}
+<script type="text/javascript" src='{% static 'd3/d3.js' %}'></script>
+<script type="text/javascript" src='{% static 'jQuery/dist/jquery.js' %}'></script>
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key={{ googleKey }}"></script>
+{% block extrastyle %}{{ block.super }}<link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/visualization.css" />{% endblock %}
+{% endblock %}
+
+{% load visualization_extras %}
+
+{% block content %}
+<div id="map-canevas"></div>
+<!--<div id="loader"></div>-->
+
+<div id="time-search" class="module">
+<h2>DAY AND WEATHER STATION</h2>
+
+<form id="dateTimeForm" action="/visualization/" method="post">{% csrf_token %}
+<span class="dateform">
+<table>
+{{ form.as_table }}</table>
+<!--{% for field in form.visible_fields %}
+	{{field}}
+{% endfor %}-->
+</span>
+<div>
+	<span class="alignleft">
+		{% if previous %} 
+		<a href="{% url 'show_image_shift' shift=-1 %}">Previous day</a>
+		{% endif %}
+	</span>
+    <span class="aligncenter">
+    	<input type="submit" name="submitBtn" value="Search">
+    </span>
+    <span class="alignright">
+    	{% if next %}
+    	<a href="{% url 'show_image_shift' shift=1 %}">Next day</a>
+    	{% endif %}
+    </span>
+</div>
+<div style="clear: both;"></div>
+</form>
+</div>
+
+{% if boolRadiosondeAM or boolRadiosondePM %}
+<div id="radiosonde-infos" class="module">
+<h2>RADIOSONDE</h2>
+<div id="radiosonde-infos-content">
+<form>
+<select id="radiosondeSelectionForm"></select>
+</form>
+</div></div>
+{% endif %}
+
+<div id="weather-infos" class="module">
+<h2>WEATHER AND TIME SELECTION</h2>
+<div id="weather-infos-content">
+<img id="playimg" src="{% static "img/play.png" %}"><br>
+<form>
+<select id="dataSelectionFormLeft"></select>
+<select id="dataSelectionFormRight"></select>
+</form>
+</div></div>
+
+
+<div id="image-thumbnail" class="module">
+<h2>ORIGINAL IMAGE</h2>
+<img id="imgTb">
+</div>
+
+<script type="text/javascript">
+
+/**
+ * Booleans to check what data is available
+ */
+var boolWeather = "{{ boolWeather }}" === "True";
+var boolRadiosondeAM = "{{ boolRadiosondeAM }}" === "True";
+var boolRadiosondePM = "{{ boolRadiosondePM }}" === "True";
+
+/**
+ * Fetch the data
+ * Functions for handling data
+ */
+var formatTime = d3.timeFormat("%H:%M:%S");
+var parseTime = d3.timeParse("%H:%M:%S");
+
+if (boolWeather){
+	var allValues = {};
+	var getTimeAndValue = function(d) {
+		return {
+			time: parseTime(d["time"]),
+			value: d["value"],
+		};
+	};
+	
+	allValues['temperature'] = {{ temperature|safe }}.map(getTimeAndValue);
+	allValues['humidity'] = {{ humidity|safe }}.map(getTimeAndValue);
+	allValues['dew_point'] = {{ dew_point|safe }}.map(getTimeAndValue);
+	allValues['wind_speed'] = {{ wind_speed|safe }}.map(getTimeAndValue);
+	allValues['wind_direction'] = {{ wind_direction|safe }}.map(getTimeAndValue);
+	allValues['pressure'] = {{ pressure|safe }}.map(getTimeAndValue);
+	allValues['rainfall_rate'] = {{ rainfall_rate|safe }}.map(getTimeAndValue);
+	allValues['solar_radiation'] = {{ solar_radiation|safe }}.map(getTimeAndValue);
+	allValues['uv_index'] = {{ uv_index|safe }}.map(getTimeAndValue);
+	allValues['cloud_height'] = {{ cloud_height|safe }}.map(getTimeAndValue);
+	
+	var arrItems = {{ items | safe }};
+	var items = {}
+	for(var i = 0; i < arrItems.length; ++i){
+	    items[arrItems[i][1]] = arrItems[i][0];
+	}
+}
+
+var arrImage = {{ images|safe }};
+var image = arrImage.map(function(d) {
+	return {
+		url: d["url"],
+		url_tn: d["url_tn"],
+		undistorted: d["undistorted"],
+		time: parseTime(d["time"]),
+		id: d["id"]
+	}
+});
+
+if (boolRadiosondeAM){
+	var arrAllValuesRadAM = {{ allValuesRadAM|safe }};
+	var allSamplesRadAM = {{ allSamplesRadAM|safe }};
+
+	var allValuesRadAM = {};
+	var getHeightAndValue = function(d, i) {
+		return {
+			height: arrAllValuesRadAM['HGHT'][i],
+			value: d,
+		}
+	};
+
+	allValuesRadAM['PRES'] = arrAllValuesRadAM['PRES'].map(getHeightAndValue);
+	allValuesRadAM['TEMP'] = arrAllValuesRadAM['TEMP'].map(getHeightAndValue);
+	allValuesRadAM['DWPT'] = arrAllValuesRadAM['DWPT'].map(getHeightAndValue);
+	allValuesRadAM['RELH'] = arrAllValuesRadAM['RELH'].map(getHeightAndValue);
+	allValuesRadAM['DRCT'] = arrAllValuesRadAM['DRCT'].map(getHeightAndValue);
+	allValuesRadAM['SKNT'] = arrAllValuesRadAM['SKNT'].map(getHeightAndValue);
+	allValuesRadAM['clouds'] = arrAllValuesRadAM['clouds'].map(getHeightAndValue);	
+}
+
+if (boolRadiosondePM){
+	var arrAllValuesRadPM = {{ allValuesRadPM|safe }};
+	var allSamplesRadPM = {{ allSamplesRadPM|safe }};
+
+	var allValuesRadPM = {};
+	var getHeightAndValue = function(d, i) {
+		return {
+			height: arrAllValuesRadAM['HGHT'][i],
+			value: d,
+		}
+	};
+
+	allValuesRadPM['PRES'] = arrAllValuesRadPM['PRES'].map(getHeightAndValue);
+	allValuesRadPM['TEMP'] = arrAllValuesRadPM['TEMP'].map(getHeightAndValue);
+	allValuesRadPM['DWPT'] = arrAllValuesRadPM['DWPT'].map(getHeightAndValue);
+	allValuesRadPM['RELH'] = arrAllValuesRadPM['RELH'].map(getHeightAndValue);
+	allValuesRadPM['DRCT'] = arrAllValuesRadPM['DRCT'].map(getHeightAndValue);
+	allValuesRadPM['SKNT'] = arrAllValuesRadPM['SKNT'].map(getHeightAndValue);
+	allValuesRadPM['clouds'] = arrAllValuesRadPM['clouds'].map(getHeightAndValue);
+}
+
+var itemsRad = {{ itemsRad | safe }};
+
+var imageCenter = new google.maps.LatLng({{ latCtr }}, {{ longCtr }});
+</script>
+{% if boolRadiosondeAM or boolRadiosondePM %}
+<script type="text/javascript" src={% static 'js/radiosonde.js' %}></script>
+{% endif %}
+<script type="text/javascript" src={% static 'js/loader.js' %}></script>
+<script type="text/javascript" src={% static 'js/weather.js' %}></script>
+<script type="text/javascript" src={% static 'js/map.js' %}></script>
+<script type="text/javascript" src={% static 'js/slideshow.js' %}></script>
+
+<script type="text/javascript">
+window.onresize = function(event){
+	{% if boolRadiosondeAM or boolRadiosondePM %}
+	onresizeRadiosonde(event);
+	{% endif %}
+	onresizeWeather(event);
+}
+</script>
+{% endblock %}
