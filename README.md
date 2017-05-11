@@ -1,6 +1,6 @@
 # Visuo server
 
-This is the source code of a simplified version of the server developed for the VISUO project between the Nanyang Technological University, the Advanced Digital Sciences Center and the National Metrology Centre (Singapore). It collects and stores data from sky imagers, weather stations and radiosondes, and provides a web interface for visualizing and downloading the data behind by a login mechanism. It is developed in python using the [django web framework](https://www.djangoproject.com/). Visualizations are coded in javascript using [d3.js](https://d3js.org/) and the [Google Maps JavaScript Api](https://developers.google.com/maps/documentation/javascript/).
+This is the source code of a simplified version of the server developed for the VISUO project between the Nanyang Technological University, the Advanced Digital Sciences Center and the National Metrology Centre (Singapore). It collects and stores data from sky imagers, weather stations and radiosondes, and provides a web interface for visualizing and downloading the data behind a login mechanism. It is developed in python using the [django web framework](https://www.djangoproject.com/). Visualizations are coded in javascript using [d3.js](https://d3js.org/) and the [Google Maps JavaScript Api](https://developers.google.com/maps/documentation/javascript/).
 
 A sample deployment is provided here (username: `demo`, password: `demodemo`): http://visuo.pythonanywhere.com/
 
@@ -29,7 +29,7 @@ The required packages are listed under `requirements.txt`.
 
 ## Installation
 
-The source code should be deployed as a standard django web app (including initializing the database, creating the superuser, serving static and media files, ...). Please refer to the [official documentation](https://docs.djangoproject.com/en/1.11/howto/deployment/). Choose databases and media files storage strategies which scale with the amount of data that the app should store.
+The source code should be deployed as a standard django web app (including initializing the database, creating the superuser, serving static and media files, ...). Please refer to the [official documentation](https://docs.djangoproject.com/en/1.11/howto/deployment/). Choose database and media files storage strategies which scale with the amount of data that the app should store.
 
 The following steps are also required:
 - We use [django-bower](https://django-bower.readthedocs.io/en/latest/) to manage javascript packages. Run `./manage.py bower install` to download the dependencies.
