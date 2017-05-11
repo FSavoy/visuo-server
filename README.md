@@ -2,7 +2,7 @@
 
 This is the source code of a simplified version of the server developed for the [VISUO project](http://vintage.winklerbros.net/clouds.html) between the [Nanyang Technological University](http://www.ntu.edu.sg), the [Advanced Digital Sciences Center](http://adsc.illinois.edu/) and the [National Metrology Centre](https://www.a-star.edu.sg/nmc/) (Singapore). It collects and stores data from sky imagers, weather stations and radiosondes, and provides a web interface for visualizing and downloading the data behind a login mechanism. It is developed in python using the [django web framework](https://www.djangoproject.com/). Visualizations are coded in javascript using [d3.js](https://d3js.org/) and the [Google Maps JavaScript Api](https://developers.google.com/maps/documentation/javascript/).
 
-A sample deployment is provided here (username: `demo`, password: `demodemo`): http://visuo.pythonanywhere.com/
+A sample deployment with two days of data (28th and 29th of October 2015) is provided here (username: `demo`, password: `demodemo`): http://visuo.pythonanywhere.com/
 
 ![alt text](https://github.com/FSavoy/visuo-server/raw/master/common-static/img/screenshot.png "Interface screenshot")
 
@@ -56,7 +56,7 @@ We use [Davis Vantage Pro 2](http://www.davisnet.com/solution/vantage-pro2/) wea
 
 ### Radiosondes
 
-Importing radiosonde measurements follows a different approach. We use the [database maintained by the University of Wyoming](http://weather.uwyo.edu/upperair/sounding.html) to gather the data. This project only supports a single radiosonde launch location, which should be informed by writing the station number into the `visuo-open-source/settings.py` file. Executing `.\manage.py download_radiosonde --start-date [YYYY-mm-dd] --end-date [YYYY-mm-dd]` download the data between the provided dates. Calling the same script without arguments (`.\manage.py download_radiosonde`) downloads the latest data available. Use a *cron* job on the server to invoke this script twice a day in order to automatically download the measurements for all new radiosonde launches.
+Importing radiosonde measurements follows a different approach. We use the [database maintained by the University of Wyoming](http://weather.uwyo.edu/upperair/sounding.html) to gather the data. This project only supports a single radiosonde launch location, which should be informed by writing the station number into the `visuo-open-source/settings.py` file. Executing `.\manage.py download_radiosonde --start-date [YYYY-mm-dd] --end-date [YYYY-mm-dd]` downloads the data between the provided dates. Calling the same script without arguments (`.\manage.py download_radiosonde`) downloads the latest data available. Use a *cron* job on the server to invoke this script twice a day in order to automatically download the measurements for all new radiosonde launches.
 
 ## License
 
